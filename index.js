@@ -18,6 +18,20 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
+app.get("/api/:timestamp", (req, res) => {
+  const { timestamp } = req.params;
+  
+  let date = new Date(timestamp);
+  if (date == 'Invalid Date') {
+    date = new Date(timestamp * 1000);
+  }
+
+  res.json({
+    unix: Math.floor(date.getTime() / 1000),
+    utc: date,
+  });
+});
+
 
 // your first API endpoint... 
 app.get("/api/hello", function (req, res) {
