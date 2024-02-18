@@ -18,17 +18,17 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-app.get("/api/:timestamp", (req, res) => {
-  const { timestamp } = req.params;
+app.get("/api/:date?", (req, res) => {
+  const { date } = req.params;
   
-  let date = new Date(timestamp);
+  let dateObj = new Date(date);
   if (date == 'Invalid Date') {
-    date = new Date(timestamp * 1000);
+    dateObj = new Date(date * 1000);
   }
 
   res.json({
-    unix: Math.floor(date.getTime() / 1000),
-    utc: date,
+    unix: Math.floor(dateObj.getTime() / 1000),
+    utc: dateObj.toUTCString(),
   });
 });
 
