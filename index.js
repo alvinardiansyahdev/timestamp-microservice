@@ -20,16 +20,20 @@ app.get("/", function (req, res) {
 
 app.get("/api/:date?", (req, res) => {
   const { date } = req.params;
-  
-  let dateObj = new Date(date);
-  if (date == 'Invalid Date') {
-    dateObj = new Date(date * 1000);
+  let response;
+  if (/\d{5,}/.test(date)) {
+    response = {
+      unix: date,
+      utc: new Date(date * 1000).toUTCString(),
+    };
+  } else {
+    response = {
+      unix: new Date(date).valueOf(),
+      utc: new Date(date).toUTCString(),
+    }
   }
 
-  res.json({
-    unix: Math.floor(dateObj.getTime() / 1000),
-    utc: dateObj.toUTCString(),
-  });
+  res.json(response);
 });
 
 
